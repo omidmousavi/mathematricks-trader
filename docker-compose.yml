@@ -1,0 +1,46 @@
+version: "3.9"
+
+services:
+  mongodb:
+    image: mongo:6
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    command: ["--replSet", "rs0"]
+
+  cerebro-service:
+    build:
+      context: ./services/cerebro_service
+    container_name: cerebro-service
+    volumes:
+      - ./services:/app/services
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017/?replicaSet=rs0
+    depends_on:
+      - mongodb
+
+  execution-service:
+    build:
+      context: ./services/execution_service
+    container_name: execution-service
+    volumes:
+      - ./services:/app/services
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017/?replicaSet=rs0
+    depends_on:
+      - mongodb
+
+  frontend:
+    build: ./frontend-admin
+    volumes:
+      - ./frontend-admin:/app
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+
+
+volumes:
+  mongo_data:
+
