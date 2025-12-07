@@ -39,7 +39,7 @@ def send_signal(payload: dict, signal_type: str = "single", previous_entry_id: s
         previous_entry_id: MongoDB ObjectId of previous ENTRY signal (for EXIT signals)
     """
     # Connect to MongoDB
-    mongodb_uri = os.getenv('MONGODB_URI', 'mongodb://localhost:27017/?replicaSet=rs0')
+    mongodb_uri = 'mongodb://localhost:27017/?directConnection=true'
     try:
         client = MongoClient(mongodb_uri, serverSelectionTimeoutMS=5000)
         # Test connection
@@ -177,7 +177,7 @@ def send_signal(payload: dict, signal_type: str = "single", previous_entry_id: s
 
 def list_strategies():
     """List available strategies from MongoDB"""
-    mongodb_uri = os.getenv('MONGODB_URI', 'mongodb://localhost:27017/?replicaSet=rs0')
+    mongodb_uri = 'mongodb://localhost:27017/?directConnection=true'
     try:
         client = MongoClient(mongodb_uri, serverSelectionTimeoutMS=5000)
         client.server_info()

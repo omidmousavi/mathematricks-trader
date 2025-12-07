@@ -8,8 +8,9 @@ services:
       - "27017:27017"
     volumes:
       - mongo_data:/data/db
-    command: ["--replSet", "rs0"]
-
+      - ./mongo-init:/docker-entrypoint-initdb.d
+    command: ["--replSet", "rs0", "--bind_ip_all"]
+  
   cerebro-service:
     build:
       context: ./services/cerebro_service
@@ -32,6 +33,30 @@ services:
     depends_on:
       - mongodb
 
+  signal-ingestion:
+    build:
+      context: ./services/signal_ingestion
+    container_name: signal-ingestion
+    volumes:
+      - ./services:/app/services
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017/?replicaSet=rs0
+    depends_on:
+      - mongodb
+
+  account-data-service:
+    build:
+      context: ./services/account_data_service                  
+    container_name: account-data-service
+    ports:
+      - "8002:8002"
+    volumes:
+      - ./services:/app/services
+    environment:      
+      - MONGODB_URI=mongodb://mongodb:27017/?replicaSet=rs0
+    depends_on:
+      - mongodb
+
   frontend:
     build: ./frontend-admin
     volumes:
@@ -40,7 +65,5 @@ services:
     ports:
       - "5173:5173"
 
-
 volumes:
   mongo_data:
-

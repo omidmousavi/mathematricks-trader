@@ -13,4 +13,4 @@ COPY . .
 EXPOSE 8002
 
 # Run the service
-CMD ["python", "main.py"]
+CMD ["python", "services/account_data_service/account_data_main.py"]

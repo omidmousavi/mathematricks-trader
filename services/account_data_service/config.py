@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # MongoDB
-MONGODB_URI = os.getenv('MONGODB_URI', 'mongodb://localhost:27017/')
+MONGODB_URI = 'mongodb://mongodb:27017/?replicaSet=rs0'
 DATABASE_NAME = 'mathematricks_trading'
 
 # GCP
