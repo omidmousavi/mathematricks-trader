@@ -17,8 +17,12 @@ services:
     container_name: cerebro-service
     volumes:
       - ./services:/app/services
+      - /home/omid/Desktop/keys:/credentials:ro
     environment:
       - MONGODB_URI=mongodb://mongodb:27017/?replicaSet=rs0
+      - GOOGLE_APPLICATION_CREDENTIALS=/credentials/pubsub.json
+      - GCP_PROJECT_ID=mathematricks-trader-480718
+      - ACCOUNT_DATA_SERVICE_URL=http://account-data-service:8082
     depends_on:
       - mongodb
 
@@ -28,10 +32,16 @@ services:
     container_name: execution-service
     volumes:
       - ./services:/app/services
+      - /home/omid/Desktop/keys:/credentials:ro
     environment:
       - MONGODB_URI=mongodb://mongodb:27017/?replicaSet=rs0
+      - GOOGLE_APPLICATION_CREDENTIALS=/credentials/pubsub.json
+      - GCP_PROJECT_ID=mathematricks-trader-480718
+      - ACCOUNT_DATA_SERVICE_URL=http://account-data-service:8082
     depends_on:
+      - account-data-service
       - mongodb
+      
 
   signal-ingestion:
     build:
@@ -39,8 +49,11 @@ services:
     container_name: signal-ingestion
     volumes:
       - ./services:/app/services
+      - /home/omid/Desktop/keys:/credentials:ro
     environment:
       - MONGODB_URI=mongodb://mongodb:27017/?replicaSet=rs0
+      - GOOGLE_APPLICATION_CREDENTIALS=/credentials/pubsub.json
+      - GCP_PROJECT_ID=mathematricks-trader-480718
     depends_on:
       - mongodb
 
@@ -49,7 +62,7 @@ services:
       context: ./services/account_data_service                  
     container_name: account-data-service
     ports:
-      - "8002:8002"
+      - "8082:8082"
     volumes:
       - ./services:/app/services
     environment:      

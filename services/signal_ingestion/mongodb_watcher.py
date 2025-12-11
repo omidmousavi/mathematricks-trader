@@ -245,10 +245,10 @@ class MongoDBWatcher:
 
                         # Filter by environment
                         document_environment = raw_signal_doc.get('environment', 'unknown')
-                        if document_environment != self.environment:
-                            # Ignore signals from other environments
-                            logger.info(f"⏭️ Skipping signal from {document_environment} environment (expecting {self.environment})")
-                            continue
+                        #if document_environment != self.environment:
+                        #   # Ignore signals from other environments
+                        #   logger.info(f"⏭️ Skipping signal from {document_environment} environment (expecting {self.environment})")
+                        #   continue
 
                         # Must have signalID (valid signal)
                         if 'signalID' not in raw_signal_doc:

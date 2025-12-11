@@ -10,7 +10,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Expose port
-EXPOSE 8002
+EXPOSE 8082
 
 # Run the service
 CMD ["python", "services/account_data_service/account_data_main.py"]

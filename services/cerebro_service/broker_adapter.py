@@ -9,11 +9,13 @@ import logging
 import requests
 from typing import Dict, Any, Optional
 from datetime import datetime
+import os
 
 logger = logging.getLogger('cerebro.broker_adapter')
 
 # AccountDataService URL
-ACCOUNT_DATA_SERVICE_URL = "http://localhost:8082"
+#ACCOUNT_DATA_SERVICE_URL = 'http://account-data-service:8082'
+ACCOUNT_DATA_SERVICE_URL = os.getenv('ACCOUNT_DATA_SERVICE_URL', 'http://localhost:8082')
 
 
 class CerebroBrokerAdapter:
